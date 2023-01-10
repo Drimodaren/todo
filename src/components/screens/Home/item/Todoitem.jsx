@@ -6,8 +6,7 @@ import { BsTrash } from 'react-icons/bs';
 const TodoItem = ({ todo, changeTodo, removeTodo }) => {
   return (
     <div className="flex items-center justify-between mb-4 rounded-2xl bg-gray-800 p-5 w-full">
-      onClick ={() => changeTodo(todo._id)}
-      <button className="flex items-center">
+      <button onClick={() => changeTodo(todo._id)} className="flex items-center">
         <Check isCompleted={todo.isCompleted} />
         <span
           className={classNames({

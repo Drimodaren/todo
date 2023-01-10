@@ -29,18 +29,16 @@ const Home = () => {
     setTodos(copy);
   };
   const removeTodo = (id) => {
-    setTodos([...todos]).filter(t=>t.id !== id)
-  }
-
-
+    setTodos([...todos].filter((t) => t._id !== id));
+  };
 
   return (
     <div className="text-white w-4/5 mx-auto">
       <h1 className="text-2xl front-bold text-center mb-10">Todo for junior</h1>
       {todos.map((todo) => (
-        <TodoItem key={todo._id} todo={todo} changeTodo={changeTodo} removeTodo={removeTodo}/>
+        <TodoItem key={todo._id} todo={todo} changeTodo={changeTodo} removeTodo={removeTodo} />
       ))}
-      <CreateTodoField setTodos={setTodos}/>
+      <CreateTodoField setTodos={setTodos} />
     </div>
   );
 };
