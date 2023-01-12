@@ -15,3 +15,4 @@ root.render(
   </React.StrictMode>
 );
 // Меняем <App /> на <Home />
+// внутри тэга Layout размещается children (это то что мы передаем в компоненту Layout)

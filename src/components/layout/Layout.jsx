@@ -6,3 +6,4 @@ const Layout = ({ children }) => {
 };
 
 export default Layout;
+//children это специальный пропс реакта как key

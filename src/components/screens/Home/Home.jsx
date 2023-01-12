@@ -1,45 +1,37 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import TodoItem from './item/Todoitem';
 import CreateTodoField from './Create-todo-field/CreateTodoField';
+import useTodos from '../../../hooks/useTodos';
+import { TodoContext } from '../../../context/todoContext';
 
-const data = [
-  {
-    _id: 'wefw23',
-    title: 'Finish the essay collaboration',
-    isCompleted: false,
-  },
-  {
-    _id: 'wefw23232',
-    title: 'Read next chapter of the book',
-    isCompleted: false,
-  },
-  {
-    _id: 'wefw2qwefcev3',
-    title: 'Send the finished assigment',
-    isCompleted: false,
-  },
-];
-
+// setTodos - метод для изменения todos
 const Home = () => {
-  const [todos, setTodos] = useState(data);
-  const changeTodo = (id) => {
-    const copy = [...todos];
-    const current = copy.find((t) => t._id === id);
-    current.isCompleted = !current.isCompleted;
-    setTodos(copy);
-  };
-  const removeTodo = (id) => {
-    setTodos([...todos].filter((t) => t._id !== id));
-  };
+  const { todos, changeTodo, removeTodo, addNewTodo, setTodos } = useTodos([]);
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    setLoading(true);
+    fetch('https://jsonplaceholder.typicode.com/todos?_limit=5')
+      .then((response) => response.json())
+      .then((json) => setTodos(json))
+      .finally(() => {
+        setLoading(false);
+      });
+  }, [setTodos]);
 
   return (
-    <div className="text-white w-4/5 mx-auto">
-      <h1 className="text-2xl front-bold text-center mb-10">Todo for junior</h1>
-      {todos.map((todo) => (
-        <TodoItem key={todo._id} todo={todo} changeTodo={changeTodo} removeTodo={removeTodo} />
-      ))}
-      <CreateTodoField setTodos={setTodos} />
-    </div>
+    <TodoContext.Provider value={{ changeTodo, removeTodo, addNewTodo }}>
+      {loading ? (
+        <div className="text-white w-4/5 mx-auto">Loading</div>
+      ) : (
+        <div className="text-white w-4/5 mx-auto">
+          <h1 className="text-2xl front-bold text-center mb-10">Todo for junior</h1>
+          {todos.map((item) => (
+            <TodoItem key={item.id} todo={item} /> // вызов компонента и CreateTodoField тоже самое. key специальный зарезервированный пропс, нужен для реакта для оптимизации, перерисвывет только то значение, которое было туда передано. Остальные значения не трогает.
+          ))}
+          <CreateTodoField />
+        </div>
+      )}
+    </TodoContext.Provider>
   );
 };
 

@@ -1,24 +1,20 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+import { TodoContext } from '../../../../context/todoContext';
 
-const CreateTodoField = ({setTodos}) => {
+const CreateTodoField = () => {
   const [title, setTitle] = useState('');
+  const {addNewTodo}=useContext(TodoContext)
   const addTodo = (title) => {
-    setTodos((prev) => [
-      {
-        _id: new Date(),
-        title,
-        isCompleted: false,
-      },
-      ...prev,
-    ]);
+    addNewTodo(title);
     setTitle('');
   };
   return (
     <div className="flex items-center justify-between mb-4 rounded-2xl border-zinc-800 border-2 px-5 py-3 w-full mt-20">
       <input
         type="text"
-        onChange={e => setTitle(e.target.value)}
+        onChange={(e) => setTitle(e.target.value)}
         value={title}
+        // в 15-16 строках управление компонента ввода
         onKeyPress={(e) => e.key === 'Enter' && addTodo(title)}
         className="bg-transparent w-full border-none outline-none"
         placeholder="Add a task"
